@@ -31,7 +31,7 @@ export = class MessageEvent extends Bot {
         command.execute(this.client, message, args)
       } catch (e) {
         console.error(e);
-        message.channel.send('There was an error trying to execute that command');
+        message.channel.send('There was an error trying to execute that command').catch(console.error);
       }
     }
   }
