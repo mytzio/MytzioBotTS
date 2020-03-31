@@ -27,7 +27,7 @@ export default class Bot extends Client {
 
 			for (const file of commandFiles) {
 				try {
-					const command = new (require(`../commands/${category}/${file}`))(this.client);
+					const command = new (require(`${__dirname}/../commands/${category}/${file}`))(this.client);
 					
 					this.commands.set(command.help.name, command);
 					command.help.category = category;
@@ -47,9 +47,9 @@ export default class Bot extends Client {
 			const eventName = file.split('.')[0];
 			
 			try {
-				const event = new (require(`../events/${file}`))(this.client, this.commands);
+				const event = new (require(`${__dirname}/../events/${file}`))(this.client, this.commands);
 				this.client.on(eventName, (...args: any) => event.execute(...args));
-				delete require.cache[require.resolve(`../events/${file}`)];
+				delete require.cache[require.resolve(`${__dirname}/../events/${file}`)];
 			} catch (e) {
 				console.error(`Could not load ${eventName} event!\n` + e);
 			}
