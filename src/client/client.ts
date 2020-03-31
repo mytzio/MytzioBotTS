@@ -19,7 +19,7 @@ export default class Bot extends Client {
 			Load commands
 		*/
 
-		const commandDir = `${__dirname}/../commands`
+		const commandDir = `${__dirname}/../commands`;
 		const categories = readdirSync(commandDir);
 
 		for (const category of categories) {
