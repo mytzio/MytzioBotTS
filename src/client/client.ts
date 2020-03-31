@@ -19,15 +19,16 @@ export default class Bot extends Client {
 			Load commands
 		*/
 
-		const categories = readdirSync(`${__dirname}/../commands/`);
+		const commandDir = `${__dirname}/../commands`
+		const categories = readdirSync(commandDir);
 
 		for (const category of categories) {
-			const categoryPath = path.resolve(`${__dirname}/../commands/${category}/`);
+			const categoryPath = path.resolve(`${commandDir}/${category}/`);
 			const commandFiles = readdirSync(categoryPath);
 
 			for (const file of commandFiles) {
 				try {
-					const command = new (require(`${__dirname}/../commands/${category}/${file}`))(this.client);
+					const command = new (require(`${commandDir}/${category}/${file}`))(this.client);
 					
 					this.commands.set(command.help.name, command);
 					command.help.category = category;
@@ -41,15 +42,16 @@ export default class Bot extends Client {
 			Load events
 		*/
 
-		const eventFiles = readdirSync(`${__dirname}/../events/`);
+		const eventDir = `${__dirname}/../events`;
+		const eventFiles = readdirSync(eventDir);
 
 		for (const file of eventFiles) {
 			const eventName = file.split('.')[0];
 			
 			try {
-				const event = new (require(`${__dirname}/../events/${file}`))(this.client, this.commands);
+				const event = new (require(`${eventDir}/${file}`))(this.client, this.commands);
 				this.client.on(eventName, (...args: any) => event.execute(...args));
-				delete require.cache[require.resolve(`${__dirname}/../events/${file}`)];
+				delete require.cache[require.resolve(`${eventDir}/${file}`)];
 			} catch (e) {
 				console.error(`Could not load ${eventName} event!\n` + e);
 			}
