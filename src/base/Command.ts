@@ -4,12 +4,12 @@ export default class Command {
 
   public client: Client;
   public config: { enabled: boolean; guildOnly: boolean; aliases: any[]; permLevel: string; };
-  public help: { name: string; description: string; usage: string; category: string; };
+  public help: { name: string; description: string; usage: string[]; category: string; };
 
   constructor(client: Client, {
     name = 'No name provided',
     description = 'No description provided',
-    usage = 'No usage provided',
+    usage = ['No usage provided'],
     category = 'Miscelaneous',
     enabled = true,
     guildOnly = false,
