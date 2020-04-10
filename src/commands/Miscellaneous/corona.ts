@@ -19,76 +19,57 @@ export = class Corona extends Command {
   }
 
   public async execute(_client: Client, _message: Message, _args: [string]) {
-    const url = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData';
+    const defaultUrl = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2';
+    const hospitalisedUrl = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaHospitalData';
 
-    try {
-      const response = await axios.get(url);
+    const response = await axios.get(defaultUrl);
+      
+    const confirmed = response.data.confirmed;
+    const deaths = response.data.deaths;
 
-      const confirmed = response.data.confirmed;
-		  const deaths = response.data.deaths;
-		  const recovered = response.data.recovered;
+    const estimate = (items: any[]) => {
+      const timeNow = dayjs();
 
-      const estimate = (items: any[]) => {
-        const timeNow = dayjs();
+      let counter = 0;
+      items.forEach(item => {
+        const timeInCase = dayjs(item.date);
+        const daysDifference = timeInCase.diff(timeNow, 'day');
 
-        let counter = 0;
-        items.forEach(item => {
-          const timeInCase = dayjs(item.date);
-          const daysDifference = timeInCase.diff(timeNow, 'day');
+        if (daysDifference < -13 ) counter++;
+        else return;
+      })
 
-          if (daysDifference < -13 ) counter++;
-        })
-
-        return counter;
-      }
-
-      const estimateConfirmed = confirmed.length - deaths.length - estimate(confirmed);
-      const estimateRecovered = estimate(confirmed) - deaths.length;
-
-      const date = (time: string) => {
-        return dayjs(time).locale('fi').format('L');
-      }
-
-      const district = (district: string | null) => {
-        return (!district || district.length < 1) ? 'unknown' : district;
-      }
-
-      const lastCase = (items: any[]) => {
-        let lastItem = items.slice(-1)[0];
-
-        lastItem.date = date(lastItem.date);
-        lastItem.healthCareDistrict = district(lastItem.healthCareDistrict);
-        return `**${lastItem.healthCareDistrict}**\n*${lastItem.date}*` || '-';
-      }
-
-      const embed = new MessageEmbed()
-        .setTitle('Corona in Finland')
-        .setDescription('Statistics about COVID-19 in Finland')
-        .addField('Confirmed', `${confirmed.length} (~${estimateConfirmed})`, true)
-        .addField('Deaths', `${deaths.length}`, true)
-        .addField('Recovered', `${recovered.length} (~${estimateRecovered})`, true)
-        .addField('\u200B', '\u200B')
-        .addField('Last Confirmed', lastCase(confirmed), true)
-        .addField('Last Death', lastCase(deaths), true)
-        .addField('Last Recovered', lastCase(recovered), true)
-        .setFooter(`Replying to ${_message.author.tag} - Sources: https://github.com/HS-Datadesk/koronavirus-avoindata`);
-        
-      _message.channel.send(embed);
-
-      const activity = async () => {
-        const a = await axios.get(url);
-
-			  const c = a.data.confirmed;
-			  const d = a.data.deaths;
-			  const r = a.data.recovered;
-
-			  _client.user?.setActivity(`C: ${c.length}, D: ${d.length}, R: ${r.length}`, { type: 'WATCHING' });
-      }
-
-      activity();
-		  setInterval(activity, 300000);
-    } catch (e) {
-      console.error(e);
+      return counter;
     }
+
+    const estimateRecovered = estimate(confirmed) - deaths.length;
+
+    const embed = new MessageEmbed()
+      .setTitle('Corona in Finland')
+      .setDescription('Statistics about COVID-19 in Finland')
+      .addField('Confirmed', `${confirmed.length}`, true)
+      .addField('Deaths', `${deaths.length}`, true)
+      .addField('Recovered', `~${estimateRecovered}`, true)
+      .setFooter(`Replying to ${_message.author.tag} - Sources: https://github.com/HS-Datadesk/koronavirus-avoindata`);
+
+    /*
+      Hospitalised Row
+    */
+    const response2 = await axios.get(hospitalisedUrl);
+    const hospitalised = response2.data.hospitalised.reverse();
+
+    let counter = 0;
+    while (hospitalised[counter].area !== 'Finland' || counter > 20) counter++;
+
+    if (hospitalised[counter].area === 'Finland') {
+      embed.addFields(
+        { name: '\u200B', value: '\u200B' },
+        { name: 'Hospitalised', value: hospitalised[counter].totalHospitalised || '-', inline: true, },
+        { name: 'In Ward', value: hospitalised[counter].inWard || '-', inline: true, },
+        { name: 'In Intensive Care', value: hospitalised[counter].inIcu || '-', inline: true, },
+      ) 
+    }
+
+    _message.channel.send(embed);
   }
 }
