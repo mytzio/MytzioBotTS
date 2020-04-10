@@ -1,5 +1,5 @@
 import Bot from '../client/client';
-import { GuildMember, GuildChannel } from 'discord.js';
+import { GuildMember, GuildChannel, MessageEmbed } from 'discord.js';
 
 export = class ReadyEvent extends Bot {
 
@@ -8,6 +8,16 @@ export = class ReadyEvent extends Bot {
 
     if (!logChannel) return;
 
-    logChannel.send(`**${member.user.username}**, has left the server!`).catch(console.error);
+    const embed = new MessageEmbed()
+      .setAuthor(`${member.user.tag} has left the server!`, member.user.displayAvatarURL())
+      .setColor('GREEN')
+      .setThumbnail(member.user.displayAvatarURL())
+      .addField('Nickname', member.displayName, true)
+      .addField('Joined Discord', member.user.createdAt?.toLocaleDateString(), true)
+      .addField('Joined Server', member.joinedAt?.toLocaleDateString(), true)
+      .setFooter(`ID: ${member.id}`)
+      .setTimestamp()
+
+    logChannel.send(embed);
   }
 }
