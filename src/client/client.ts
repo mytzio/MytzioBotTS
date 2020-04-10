@@ -46,7 +46,7 @@ export default class Bot extends Client {
 		const eventFiles = readdirSync(eventDir);
 
 		for (const file of eventFiles) {
-			const eventName = file.split('.')[0];
+			const eventName: any = file.split('.')[0];
 			
 			try {
 				const event = new (require(`${eventDir}/${file}`))(this.client, this.commands);
