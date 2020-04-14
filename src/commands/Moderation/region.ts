@@ -1,7 +1,7 @@
 import { Client, Message } from "discord.js";
 import Command from '../../base/Command';
 
-export = class Region extends Command {
+export default class Region extends Command {
   constructor (client: Client) {
     super(client, {
       name: 'region',

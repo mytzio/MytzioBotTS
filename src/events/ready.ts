@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 axios.defaults;
 
-export = class ReadyEvent extends Bot {
+export default class ReadyEvent extends Bot {
 
   constructor(client: Client) {
     super()

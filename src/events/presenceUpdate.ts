@@ -1,7 +1,7 @@
 import Bot from '../client/client';
 import { Client, Presence } from 'discord.js';
 
-export = class ReadyEvent extends Bot {
+export default class PresenceEvent extends Bot {
 
   constructor(client: Client) {
     super();

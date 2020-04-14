@@ -1,7 +1,7 @@
 import { Client, Collection, Message } from 'discord.js';
 import Bot from '../client/client';
 
-export = class MessageEvent extends Bot {
+export default class MessageEvent extends Bot {
   public prefix: string;
 
   constructor (client: Client, commands: Collection<unknown, unknown>) {

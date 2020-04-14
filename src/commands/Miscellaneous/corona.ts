@@ -1,5 +1,6 @@
 import { Client, Message, MessageEmbed } from "discord.js";
 import Command from '../../base/Command';
+import _ from 'lodash';
 import dayjs from "dayjs";
 import utc from 'dayjs/plugin/utc';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -9,7 +10,7 @@ dayjs.extend(localizedFormat);
 import axios from "axios";
 axios.defaults;
 
-export = class Corona extends Command {
+export default class Corona extends Command {
   constructor (client: Client) {
     super(client, {
       name: 'corona',
@@ -69,6 +70,20 @@ export = class Corona extends Command {
         { name: 'In Intensive Care', value: hospitalised[counter].inIcu || '-', inline: true, },
       ) 
     }
+
+    /*
+     * Areas
+     */
+    const disctrictsGrouped = _.groupBy(confirmed, district => district.healthCareDistrict);
+    const sortedDescending = _.sortBy(disctrictsGrouped, district => district.length).reverse();
+
+    let areas = '';
+    sortedDescending.forEach((area: any) => {
+      areas += `**(${area.length})** *${area[0].healthCareDistrict}*\n`;
+    });
+    
+
+    embed.addField('Infected Areas', areas);
 
     _message.channel.send(embed);
   }

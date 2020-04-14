@@ -1,7 +1,7 @@
 import Bot from '../client/client';
 import { GuildMember, GuildChannel, MessageEmbed } from 'discord.js';
 
-export = class ReadyEvent extends Bot {
+export default class MemberLeftEvent extends Bot {
 
   public async execute(member: GuildMember) {
     const logChannel: any = member.guild.channels.cache.find((ch: GuildChannel) => ch.name === 'logger');
@@ -10,7 +10,7 @@ export = class ReadyEvent extends Bot {
 
     const embed = new MessageEmbed()
       .setAuthor(`${member.user.tag} has left the server!`, member.user.displayAvatarURL())
-      .setColor('GREEN')
+      .setColor('RED')
       .setThumbnail(member.user.displayAvatarURL())
       .addField('Nickname', member.displayName, true)
       .addField('Joined Discord', member.user.createdAt?.toLocaleDateString(), true)
