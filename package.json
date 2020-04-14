@@ -12,12 +12,14 @@
   "author": "Teo Temonen",
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "^4.14.149",
     "@types/node": "^13.11.1",
     "@types/ws": "^7.2.3",
     "axios": "^0.19.2",
     "dayjs": "^1.8.23",
     "discord.js": "^12.1.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "nodemon": "^2.0.3",
