@@ -2,15 +2,13 @@ import { Client, Collection } from 'discord.js';
 import { readdirSync } from 'fs';
 import path from 'path';
 
-export default class Bot extends Client {
+export default class Bot {
 
 	public client: Client;
-	public commands: Collection<unknown, unknown>;
 
 	constructor() {
-		super();
 		this.client = new Client({ disableMentions: 'everyone' });
-		this.commands = new Collection();
+		this.client.commands = new Collection();
 	}
 
 	public async init(token: string) {
@@ -31,7 +29,7 @@ export default class Bot extends Client {
 					const commandImporter = await import(`${commandDir}/${category}/${file}`);
 					const command = new commandImporter.default(this.client);
 					
-					this.commands.set(command.help.name, command);
+					this.client.commands.set(command.help.name, command);
 					command.help.category = category;
 				} catch (e) {
 					console.error(`Could not load ${file} command` + e);
@@ -51,7 +49,7 @@ export default class Bot extends Client {
 			
 			try {
 				const eventImporter = await import(`${eventDir}/${file}`);
-				const event = new eventImporter.default(this.client, this.commands);
+				const event = new eventImporter.default(this.client);
 				
 				this.client.on(eventName, (...args: any) => event.execute(...args));
 			} catch (e) {

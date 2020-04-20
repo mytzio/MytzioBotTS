@@ -1,13 +1,12 @@
-import { Client, Collection, Message } from 'discord.js';
+import { Client, Message } from 'discord.js';
 import Bot from '../client/client';
 
 export default class MessageEvent extends Bot {
   public prefix: string;
 
-  constructor (client: Client, commands: Collection<unknown, unknown>) {
+  constructor (client: Client) {
     super()
     this.client = client;
-    this.commands = commands;
     this.prefix = '.';
   }
 
@@ -21,8 +20,8 @@ export default class MessageEvent extends Bot {
 
       const args = message.content.slice(this.prefix.length).split(/ +/g);
       const commandName = args.shift()?.toLowerCase();
-      const command: any = this.commands.get(commandName) || 
-      this.commands.find((cmd: any) => cmd.config.aliases && cmd.config.aliases.includes(commandName));
+      const command: any = this.client.commands.get(commandName) || 
+      this.client.commands.find((cmd: any) => cmd.config.aliases && cmd.config.aliases.includes(commandName));
 
       // Return command cannot be found
       if (!command) return;
@@ -42,10 +41,6 @@ export default class MessageEvent extends Bot {
           return;
         }
         else if (command.config.permLevel === 'Owner' && message.member?.id !== '271016450750283776') {
-          message.channel.send(permsDenied);
-          return;
-        }
-        else {
           message.channel.send(permsDenied);
           return;
         }
