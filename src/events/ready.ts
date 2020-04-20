@@ -1,21 +1,20 @@
-import Bot from '../client/client';
+import Event from '../base/Event';
 import { Client } from 'discord.js';
 import dayjs from "dayjs";
 
 import axios from "axios";
 axios.defaults;
 
-export default class ReadyEvent extends Bot {
+export default class ReadyEvent extends Event {
 
   constructor(client: Client) {
-    super()
-    this.client = client
+    super(client, 'ready')
   }
 
-  public async execute() {
+  public async execute(_client: Client) {
     // Generate an Invitation Link
     try {
-      const link = await this.client.generateInvite(8);
+      const link = await _client.generateInvite(8);
       console.log('Invite bot to your server by using link below:');
       console.log(link);
     }
@@ -48,7 +47,7 @@ export default class ReadyEvent extends Bot {
   
       const estimateRecovered = estimate(c) - d.length;
 
-      this.client.user?.setPresence({
+      _client.user?.setPresence({
         activity: {
           name: `C:${c.length}, D:${d.length}, R:${estimateRecovered}`,
           type: 'WATCHING',

@@ -1,16 +1,15 @@
+import Event from '../base/Event';
 import { Client, Message } from 'discord.js';
-import Bot from '../client/client';
 
-export default class MessageEvent extends Bot {
+export default class MessageEvent extends Event {
   public prefix: string;
 
   constructor (client: Client) {
-    super()
-    this.client = client;
+    super(client, 'message')
     this.prefix = '.';
   }
 
-  public async execute(message: Message) {
+  public async execute(_client: Client, message: Message) {
     
     // Ignore other bots and their messages
     if (message.author.bot) return;
@@ -20,8 +19,8 @@ export default class MessageEvent extends Bot {
 
       const args = message.content.slice(this.prefix.length).split(/ +/g);
       const commandName = args.shift()?.toLowerCase();
-      const command: any = this.client.commands.get(commandName) || 
-      this.client.commands.find((cmd: any) => cmd.config.aliases && cmd.config.aliases.includes(commandName));
+      const command: any = _client.commands.get(commandName) || 
+      _client.commands.find((cmd: any) => cmd.config.aliases && cmd.config.aliases.includes(commandName));
 
       // Return command cannot be found
       if (!command) return;
@@ -53,7 +52,7 @@ export default class MessageEvent extends Bot {
       }
 
       try {
-        command.execute(this.client, message, args);
+        command.execute(_client, message, args);
       } catch (e) {
         console.error(e);
         message.channel.send('There was an error trying to execute that command').catch(console.error);

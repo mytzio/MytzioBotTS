@@ -45,15 +45,13 @@ export default class Bot {
 		const eventFiles = readdirSync(eventDir);
 
 		for (const file of eventFiles) {
-			const eventName: any = file.split('.')[0];
-			
 			try {
 				const eventImporter = await import(`${eventDir}/${file}`);
 				const event = new eventImporter.default(this.client);
 				
-				this.client.on(eventName, (...args: any) => event.execute(...args));
+				this.client.on(event.name, (...args: any) => event.execute(this.client, ...args));
 			} catch (e) {
-				console.error(`Could not load ${eventName} event!\n` + e);
+				console.error(`Could not load event!\n` + e);
 			}
 		}
 

@@ -1,4 +1,4 @@
-import Bot from "./client/client";
+import Bot from "./client";
 import dotenv from 'dotenv';
 dotenv.config();
 

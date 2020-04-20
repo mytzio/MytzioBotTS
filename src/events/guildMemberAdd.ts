@@ -1,9 +1,13 @@
-import Bot from '../client/client';
-import { GuildMember, GuildChannel, MessageEmbed } from 'discord.js';
+import Event from '../base/Event';
+import { GuildMember, GuildChannel, MessageEmbed, Client } from 'discord.js';
 
-export default class MemberJoinEvent extends Bot {
+export default class MemberJoinEvent extends Event {
 
-  public async execute(member: GuildMember) {
+  constructor(client: Client) {
+    super(client, 'guildMemberAdd')
+  }
+
+  public async execute(_client: Client, member: GuildMember) {
     const logChannel: any = member.guild.channels.cache.find((ch: GuildChannel) => ch.name === 'logger');
 
     if (!logChannel) return;

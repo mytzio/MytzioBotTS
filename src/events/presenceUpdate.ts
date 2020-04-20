@@ -1,14 +1,13 @@
-import Bot from '../client/client';
+import Event from '../base/Event';
 import { Client, Presence } from 'discord.js';
 
-export default class PresenceEvent extends Bot {
+export default class PresenceEvent extends Event {
 
   constructor(client: Client) {
-    super();
-    this.client = client;
+    super(client, 'presenceUpdate');
   }
 
-  public async execute(_oldPresence: Presence, newPresence: Presence) {
+  public async execute(_client: Client, _oldPresence: Presence, newPresence: Presence) {
     const guilds = [
       {
         id: '271021464952504330',
@@ -28,7 +27,7 @@ export default class PresenceEvent extends Bot {
 
       // Check every listed guild
       thisGuild.activity?.forEach(act => {
-        const guild = this.client.guilds.cache.get(thisGuild.id);
+        const guild = _client.guilds.cache.get(thisGuild.id);
         const member = guild?.members.cache.find(m => m.id === newPresence.user?.id);
 
         // Check when user have activities
