@@ -12,14 +12,16 @@
   "author": "Teo Temonen",
   "license": "MIT",
   "dependencies": {
-    "@types/lodash": "^4.14.149",
-    "@types/node": "^13.11.1",
-    "@types/ws": "^7.2.3",
+    "@types/lodash": "^4.14.150",
+    "@types/node": "^13.13.0",
+    "@types/ws": "^7.2.4",
     "axios": "^0.19.2",
-    "dayjs": "^1.8.23",
-    "discord.js": "^12.1.1",
+    "dayjs": "^1.8.24",
+    "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "ytdl-core": "^2.1.0",
+    "ytpl": "^0.1.20"
   },
   "devDependencies": {
     "nodemon": "^2.0.3",
