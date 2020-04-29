@@ -114,7 +114,8 @@ export default class Dispatcher {
         }
         
         if (!this.queue) this.queueConstruct(message, song);
-        else return this.queue.songs.push(song);
+        else this.queue.songs.push(song);
+        return message.channel.send(`${message.author} -> "${song.title}" has added to the queue!`)
       } catch (e) {
         console.error(e);
         return message.channel.send('Something went wrong while fetching data via YTDL');
