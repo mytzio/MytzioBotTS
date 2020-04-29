@@ -23,7 +23,8 @@ export default class Region extends Command {
 		  return _message.channel.send(`Updated guild region to ${updated.region}`);
 	  }
 	  catch (e) {
-		  return console.error(e);
+      const list = ['us-east', 'hongkong', 'dubai', 'russia', 'japan', 'europe', 'south-korea', 'singapore', 'india', 'amsterdam', 'brazil', 'eu-central', 'eu-west', 'london', 'sydney', 'us-west', 'frankfurt', 'us-south', 'us-central', 'southafrica'];
+      return _message.channel.send(`\`\`\`Available regions:\n\n${list.sort().join(`\n`)}\`\`\``)
 	  }
   }
 }
