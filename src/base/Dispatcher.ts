@@ -38,7 +38,7 @@ export default class Dispatcher {
           },
         });
 
-        return response.data.items[0].id.videoId;
+        return response.data.items[0]?.id.videoId;
       } catch (e) {
         console.error(e);
         return null;
