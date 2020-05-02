@@ -125,8 +125,13 @@ export default class Dispatcher {
           priority: true,
         };
 
-        if (!this.queue) this.queueConstruct(message, song);
-        else this.queue.songs.push(song);
+        if (!this.queue) {
+          this.queueConstruct(message, song);
+        } else {
+          const notPrioritised = this.queue.songs.findIndex((i: any) => i.priority === false);
+          notPrioritised >= 0 ? this.queue.songs.splice(notPrioritised, 0, song) : this.queue.songs.push(song);
+        }
+
         return message.channel.send(`${message.author} -> "${song.title}" has added to the queue!`);
       } catch (e) {
         console.error(e);
