@@ -1,7 +1,10 @@
 import { Message } from 'discord.js';
 import YTDL from 'ytdl-core';
+import YTPL from 'ytpl';
 import axios from 'axios';
 import MediaPlayer from './MediaPlayer';
+
+const PL: any = YTPL;
 
 export const cache = new Map();
 
@@ -17,6 +20,13 @@ export default class Dispatcher {
     if (YTDL.validateURL(query) || YTDL.validateID(query)) {
       try {
         return YTDL.getVideoID(query);
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    } else if (PL.validateURL(query)) {
+      try {
+        return PL.getPlaylistID(query);
       } catch (e) {
         console.error(e);
         return null;
@@ -102,16 +112,17 @@ export default class Dispatcher {
 
   public async play(message: Message, args: any[]) {
     const query = args.join(' ');
-    const videoID = await this.getID(query);
+    const ID = await this.getID(query);
 
-    if (videoID) {
+    if (YTDL.validateID(ID)) {
       try {
-        const songInfo = await YTDL.getInfo(videoID);
+        const songInfo = await YTDL.getInfo(ID);
 
         const song = {
           title: songInfo.title,
           url: songInfo.video_url,
           requestedBy: message.author.username,
+          priority: true,
         };
 
         if (!this.queue) this.queueConstruct(message, song);
@@ -120,6 +131,34 @@ export default class Dispatcher {
       } catch (e) {
         console.error(e);
         return message.channel.send('Something went wrong while fetching data via YTDL');
+      }
+    } else if (PL.validateURL(`https://www.youtube.com/playlist?list=${ID}`)) {
+      try {
+        const playlist = await PL(ID, { limit: 0 });
+
+        playlist.items.forEach((item: any) => {
+          try {
+            if (!YTDL.validateURL(item.url_simple)) return;
+
+            const song = {
+              title: item.title,
+              url: item.url_simple,
+              requestedBy: message.author.username,
+              priority: false,
+            };
+
+            if (!this.queue) this.queueConstruct(message, song);
+            else this.queue.songs.push(song);
+          } catch (e) {
+            console.error(e);
+            message.channel.send(`Something went wrong while fetching data from <${item.url_simple}> via YTDL`);
+          }
+        });
+
+        return message.channel.send(`${message.author} -> ${playlist.items.length} songs added to the queue!`);
+      } catch (e) {
+        console.error(e);
+        return message.channel.send('Something went wrong while fetching playlist data via YTPL');
       }
     } else {
       return message.channel.send('Could not fetch ID');
