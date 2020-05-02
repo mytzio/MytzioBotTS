@@ -3,7 +3,7 @@ import YTDL from 'ytdl-core';
 import axios from 'axios';
 import MediaPlayer from './MediaPlayer';
 
-export const cache = new Map()
+export const cache = new Map();
 
 export default class Dispatcher {
 
@@ -27,11 +27,11 @@ export default class Dispatcher {
           params: {
             key: process.env.YOUTUBE_API_TOKEN,
             maxResults: 5,
-				  	order: 'relevance',
-					  part: 'snippet',
-					  q: query,
-					  type: 'video',
-					  videoCategoryId: 10,
+            order: 'relevance',
+            part: 'snippet',
+            q: query,
+            type: 'video',
+            videoCategoryId: 10,
           },
           headers: {
             Accept: 'application/json',
@@ -41,7 +41,7 @@ export default class Dispatcher {
         return response.data.items[0].id.videoId;
       } catch (e) {
         console.error(e);
-        return null;        
+        return null;
       }
     }
   }
@@ -60,7 +60,7 @@ export default class Dispatcher {
       console.error(e);
       delete this.queue;
       this.queue.voiceChannel.leave();
-      return message.channel.send('I could not join the voice channel')
+      return message.channel.send('I could not join the voice channel');
     }
   }
 
@@ -79,7 +79,7 @@ export default class Dispatcher {
       quality: 'highestaudio',
       highWaterMark: 1 << 25,
     });
-  
+
     const dispatcher = await this.queue.connection.play(stream, {
       bitrate: 'auto',
       highWaterMark: 1,
@@ -87,15 +87,16 @@ export default class Dispatcher {
 
     dispatcher.on('error', (e: any) => {
       console.error(e);
+      this.queue.connection.dispatcher.end();
     });
-  
+
     dispatcher.on('finish', () => {
-      if (this.queue.loop !== true) this.queue.currentSong = {};
+      this.queue.currentSong = {};
       this.executeStream(this.queue.songs[0]);
     });
-  
+
     const volume = 50;
-  
+
     dispatcher.setVolumeLogarithmic(volume / 100);
   }
 
@@ -111,11 +112,11 @@ export default class Dispatcher {
           title: songInfo.title,
           url: songInfo.video_url,
           requestedBy: message.author.username,
-        }
-        
+        };
+
         if (!this.queue) this.queueConstruct(message, song);
         else this.queue.songs.push(song);
-        return message.channel.send(`${message.author} -> "${song.title}" has added to the queue!`)
+        return message.channel.send(`${message.author} -> "${song.title}" has added to the queue!`);
       } catch (e) {
         console.error(e);
         return message.channel.send('Something went wrong while fetching data via YTDL');
