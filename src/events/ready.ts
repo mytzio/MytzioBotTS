@@ -59,7 +59,7 @@ export default class ReadyEvent extends Event {
     activity();
     setInterval(activity, 600000);
     } catch (e) {
-      console.error(e);
+      console.error(`Activity request failed (${new Date().toISOString()})`);
     }
   }
 }
