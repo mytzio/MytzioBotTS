@@ -16,9 +16,12 @@ export default class Play extends Command {
 
     const guild = cache.get(_message.guild?.id);
 
-    if (!_args && guild.queue) return _message.channel.send(await guild.queue.resume().message);
+    if (!_args.length) {
+      if (guild) return _message.channel.send(await guild.queue.resume().message);
+      else return _message.channel.send('You did not provide a song to play!');
+    }
 
-    if (!guild && _args) {
+    if (!guild) {
       cache.set(_message.guild?.id, new Dispatcher());
       const guild = cache.get(_message.guild?.id);
       return guild.play(_message, _args);
