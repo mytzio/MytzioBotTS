@@ -19,14 +19,26 @@ export default class MediaPlayer {
     this.loop = 0;
   }
 
+  public resume() {
+    this.connection?.dispatcher.resume();
+    this.playing = true;
+    return { message: 'Media player resumed!' };
+  }
+
+  public pause() {
+    this.connection?.dispatcher.pause();
+    this.playing = false;
+    return { message: 'Media player paused!' };
+  }
+
   public skip() {
     this.connection?.dispatcher.end();
     return { message: 'Song has been skipped!' };
   }
 
   public stop() {
-    this.songs = [];
     this.connection?.dispatcher.end();
-    return { message: 'Media player stopped!' }
+    this.songs = [];
+    return { message: 'Media player stopped!' };
   }
 }

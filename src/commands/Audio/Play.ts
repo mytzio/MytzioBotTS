@@ -16,14 +16,14 @@ export default class Play extends Command {
 
     const guild = cache.get(_message.guild?.id);
 
-    if (!_args) return console.log('No args');
+    if (!_args && guild.queue) return _message.channel.send(await guild.queue.resume().message);
 
-    if (!guild) {
+    if (!guild && _args) {
       cache.set(_message.guild?.id, new Dispatcher());
       const guild = cache.get(_message.guild?.id);
-      guild.play(_message, _args);
+      return guild.play(_message, _args);
     } else {
-      guild.play(_message, _args);
+      return guild.play(_message, _args);
     }
   }
 }
