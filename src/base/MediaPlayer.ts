@@ -4,7 +4,7 @@ export default class MediaPlayer {
   textChannel: TextChannel | DMChannel | NewsChannel;
   voiceChannel: VoiceChannel | null | undefined;
   connection: any;
-  currentSong: {};
+  currentSong: any;
   songs: any[];
   playing: boolean;
   loop: number;
@@ -17,6 +17,25 @@ export default class MediaPlayer {
     this.songs = [];
     this.playing = true;
     this.loop = 0;
+  }
+
+  public song() {
+    return {
+      message: `${this.currentSong.title} | Requested By ${this.currentSong.requestedBy}`
+    };
+  }
+
+  public shuffle() {
+    const arr = this.songs;
+
+    let length = this.songs.length;
+    while (length) {
+      const index = Math.floor(Math.random() * length--);
+      [arr[length], arr[index]] = [arr[index], arr[length]];
+    }
+
+    this.songs = arr;
+    return { message: 'Queue has been shuffled!' };
   }
 
   public resume() {
