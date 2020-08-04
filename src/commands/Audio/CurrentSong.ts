@@ -11,7 +11,7 @@ export default class Song extends Command {
     });
   }
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
 
     const mediaPlayer = cache.get(_message.guild?.id)?.queue;
     if (!mediaPlayer) return _message.channel.send('There is no music playing at the moment!');

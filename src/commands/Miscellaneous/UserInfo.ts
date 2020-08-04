@@ -10,7 +10,7 @@ export default class UserInfo extends Command {
     });
   }
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
     let member = _message.mentions.members?.first() || _message.guild?.members.cache.find(user => user.displayName.toLowerCase() === _args[0]);
 
     if (!_args.length) member = _message.member || undefined;

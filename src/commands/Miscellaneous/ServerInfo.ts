@@ -11,7 +11,7 @@ export default class ServerInfo extends Command {
   }
 
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
     const embed = new MessageEmbed()
       .setAuthor(_message.guild?.name, _message.guild?.iconURL() || undefined)
       .setDescription(_message.guild?.description ? _message.guild.description : 'No description')

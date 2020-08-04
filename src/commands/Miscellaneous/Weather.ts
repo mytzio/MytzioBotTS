@@ -11,7 +11,7 @@ export default class Weather extends Command {
     });
   }
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
     if (_args.length < 1) return _message.channel.send('Please provide a location');
 
     const location = _args.join(' ');

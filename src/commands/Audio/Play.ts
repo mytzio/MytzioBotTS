@@ -11,7 +11,7 @@ export default class Play extends Command {
     });
   }
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
     if (!_message.member?.voice.channel) return _message.channel.send('You have to be in a voice channel!');
 
     const guild = cache.get(_message.guild?.id);

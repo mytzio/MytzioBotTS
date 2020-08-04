@@ -13,7 +13,7 @@ export default class Region extends Command {
     });
   }
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
     if (!_message.guild?.available) return;
 
     if (_args.length < 1) return _message.channel.send(`Current guild region is ${_message.guild.region}`);

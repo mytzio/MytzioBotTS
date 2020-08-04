@@ -10,7 +10,7 @@ export default class Test extends Command {
     });
   }
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
 
     console.log(await _message.guild?.fetchPreview());
   }

@@ -16,15 +16,15 @@ export default class Corona extends Command {
       name: 'corona',
       description: 'Show statistics about COVID-19 in Finland',
       aliases: ['c', 'korona'],
-    })
+    });
   }
 
-  public async execute(_client: Client, _message: Message, _args: [string]) {
+  public async execute(_client: Client, _message: Message, _args: string[]) {
     const defaultUrl = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2';
     const hospitalisedUrl = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaHospitalData';
 
     const response = await axios.get(defaultUrl);
-      
+
     const confirmed = response.data.confirmed;
     const deaths = response.data.deaths;
 
@@ -36,12 +36,12 @@ export default class Corona extends Command {
         const timeInCase = dayjs(item.date);
         const daysDifference = timeInCase.diff(timeNow, 'day');
 
-        if (daysDifference < -13 ) counter++;
+        if (daysDifference < -13) counter++;
         else return;
-      })
+      });
 
       return counter;
-    }
+    };
 
     const estimateRecovered = estimate(confirmed) - deaths.length;
 
@@ -68,7 +68,7 @@ export default class Corona extends Command {
         { name: 'Hospitalised', value: hospitalised[counter].totalHospitalised || '-', inline: true, },
         { name: 'In Ward', value: hospitalised[counter].inWard || '-', inline: true, },
         { name: 'In Intensive Care', value: hospitalised[counter].inIcu || '-', inline: true, },
-      ) 
+      );
     }
 
     /*
@@ -81,7 +81,7 @@ export default class Corona extends Command {
     sortedDescending.forEach((area: any) => {
       areas += `**(${area.length})** *${area[0].healthCareDistrict}*\n`;
     });
-    
+
 
     embed.addField('Infected Areas', areas);
 
