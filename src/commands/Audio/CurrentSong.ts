@@ -2,7 +2,7 @@ import Command from '../../base/Command';
 import { Client, Message } from "discord.js";
 import { cache } from '../../base/Dispatcher';
 
-export default class Play extends Command {
+export default class Song extends Command {
   constructor (client: Client) {
     super(client, {
       name: 'currentsong',

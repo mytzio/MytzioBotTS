@@ -1,14 +1,23 @@
 import Event from '../base/Event';
-import { GuildMember, GuildChannel, MessageEmbed, Client } from 'discord.js';
+import { GuildMember, MessageEmbed, Client } from 'discord.js';
+import defaultRole from '../base/functions/defaultRole';
+
+import config from '../config.json';
 
 export default class MemberJoinEvent extends Event {
 
-  constructor(client: Client) {
-    super(client, 'guildMemberAdd')
+  constructor (client: Client) {
+    super(client, 'guildMemberAdd');
   }
 
   public async execute(_client: Client, member: GuildMember) {
-    const logChannel: any = member.guild.channels.cache.find((ch: GuildChannel) => ch.name === 'logger');
+
+    // Assign role to a new member
+    defaultRole(member);
+
+    // Log user traffic
+    const guild = config.guilds.find(g => g.id === member.guild.id);
+    const logChannel: any = member.guild.channels.cache.find(c => c.id === guild?.log.traffic);
 
     if (!logChannel) return;
 
@@ -16,11 +25,15 @@ export default class MemberJoinEvent extends Event {
       .setAuthor(`${member.user.tag} has joined the server!`, member.user.displayAvatarURL())
       .setColor('GREEN')
       .setThumbnail(member.user.displayAvatarURL())
-      .addField('Nickname', member.displayName, true)
-      .addField('Joined Discord', member.user.createdAt?.toLocaleDateString(), true)
-      .addField('Joined Server', member.joinedAt?.toLocaleDateString(), true)
-      .setFooter(`ID: ${member.id}`)
-      .setTimestamp()
+      .addFields(
+        { name: 'Username', value: member?.user.username || '-', inline: true },
+        { name: 'Discriminator', value: member?.user.discriminator || '-', inline: true },
+        { name: 'Bot account', value: member?.user.bot ? 'Yes' : 'No', inline: true },
+
+        { name: 'User ID', value: member?.user.id || '-', inline: true },
+        { name: 'Created at', value: member?.user.createdAt.toLocaleDateString(), inline: true },
+        { name: 'Joined at', value: member?.joinedAt?.toLocaleDateString(), inline: true },
+      );
 
     logChannel.send(embed);
   }

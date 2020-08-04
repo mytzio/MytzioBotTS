@@ -1,65 +1,32 @@
 import Event from '../base/Event';
 import { Client } from 'discord.js';
-import dayjs from "dayjs";
+import defaultRole from '../base/functions/defaultRole';
 
 import axios from "axios";
 axios.defaults;
 
 export default class ReadyEvent extends Event {
 
-  constructor(client: Client) {
-    super(client, 'ready')
+  constructor (client: Client) {
+    super(client, 'ready');
   }
 
   public async execute(_client: Client) {
     // Generate an Invitation Link
     try {
       const link = await _client.generateInvite(8);
-      console.log('Invite bot to your server by using link below:');
-      console.log(link);
+      this.client.logger.log('Invite bot to your server by using link below:');
+      this.client.logger.log(link);
     }
     catch (e) {
-      console.error(e);
+      this.client.logger.error(e);
     }
 
-    // Corona statistics activity
-    try {
-      const activity = async () => {
-      const a = await axios.get('https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2');
-
-      const c = a.data.confirmed;
-      const d = a.data.deaths;
-
-      const estimate = (items: any[]) => {
-        const timeNow = dayjs();
-  
-        let counter = 0;
-        items.forEach(item => {
-          const timeInCase = dayjs(item.date);
-          const daysDifference = timeInCase.diff(timeNow, 'day');
-  
-          if (daysDifference < -13 ) counter++;
-          else return;
-        })
-  
-        return counter;
-      }
-  
-      const estimateRecovered = estimate(c) - d.length;
-
-      _client.user?.setPresence({
-        activity: {
-          name: `C:${c.length}, D:${d.length}, R:${estimateRecovered}`,
-          type: 'WATCHING',
-          url: 'https://github.com/HS-Datadesk/koronavirus-avoindata'
-        }
-      })
-    }
-
-    activity();
-    setInterval(activity, 600000);
-    } catch (e) {
-      console.error(`Activity request failed (${new Date().toISOString()})`);
-    }
+    // Default role assigning
+    _client.guilds.cache.forEach(guild => {
+      guild.members.cache.forEach(member => {
+        defaultRole(member);
+      });
+    });
   }
 }

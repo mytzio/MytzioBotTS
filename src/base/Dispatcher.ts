@@ -75,9 +75,6 @@ export default class Dispatcher {
   }
 
   private async executeStream(song: any) {
-    this.queue.currentSong = song;
-    this.queue.songs.shift();
-
     if (!song) {
       this.queue.voiceChannel.leave();
       delete this.queue;
@@ -101,7 +98,7 @@ export default class Dispatcher {
     });
 
     dispatcher.on('finish', () => {
-      this.queue.currentSong = {};
+      this.queue.songs.shift();
       this.executeStream(this.queue.songs[0]);
     });
 

@@ -10,7 +10,7 @@ export default class Region extends Command {
       usage: ['regionName'],
       guildOnly: true,
       permLevel: 'Mod'
-    })
+    });
   }
 
   public async execute(_client: Client, _message: Message, _args: [string]) {
@@ -18,13 +18,13 @@ export default class Region extends Command {
 
     if (_args.length < 1) return _message.channel.send(`Current guild region is ${_message.guild.region}`);
 
-	  try {
-		  const updated = await _message.guild.setRegion(_args[0]);
-		  return _message.channel.send(`Updated guild region to ${updated.region}`);
-	  }
-	  catch (e) {
-      const list = ['us-east', 'hongkong', 'dubai', 'russia', 'japan', 'europe', 'south-korea', 'singapore', 'india', 'amsterdam', 'brazil', 'eu-central', 'eu-west', 'london', 'sydney', 'us-west', 'frankfurt', 'us-south', 'us-central', 'southafrica'];
-      return _message.channel.send(`\`\`\`Available regions:\n\n${list.sort().join(`\n`)}\`\`\``)
-	  }
+    try {
+      const updated = await _message.guild.setRegion(_args[0]);
+      return _message.channel.send(`Updated guild region to ${updated.region}`);
+    }
+    catch (e) {
+      const list = (await _message.guild.fetchVoiceRegions()).keyArray().sort().join('\n');
+      return _message.channel.send(`\`\`\`Available regions:\n\n${list}\`\`\``);
+    }
   }
 }

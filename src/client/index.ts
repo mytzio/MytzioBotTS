@@ -1,70 +1,58 @@
-import { Client, Collection } from 'discord.js';
-import { readdirSync } from 'fs';
-import path from 'path';
+import { Client, Collection } from "discord.js";
+import { readdirSync, lstatSync } from "fs";
+import path from "path";
+import Logger from "../base/Logger";
 
 export default class Bot {
+  public client: Client;
 
-	public client: Client;
+  constructor () {
+    this.client = new Client({ disableMentions: "everyone" });
+    this.client.commands = new Collection();
+    this.client.logger = new Logger();
+  }
 
-	constructor() {
-		this.client = new Client({ disableMentions: 'everyone' });
-		this.client.commands = new Collection();
-	}
+  public async init() {
 
-	public async init(token: string) {
+    // Register a command and an event files
+    const registerFiles = async (dir: string, type: 'command' | 'event') => {
+      // Read the directory / file
+      let files = readdirSync(path.join(__dirname, dir));
 
-		/*
-			Load commands
-		*/
+      // Loop through each file
+      for (let file of files) {
+        let stat = lstatSync(path.join(__dirname, dir, file));
 
-		const commandDir = `${__dirname}/../commands`;
-		const categories = readdirSync(commandDir);
+        if (stat.isDirectory()) {
+          // If directory, start loop from begining
+          registerFiles(path.join(dir, file), type);
+        } else {
+          // Import and call a file
+          let fileImporter = await import(path.join(__dirname, dir, file));
+          let fileClass = new fileImporter.default(this.client);
 
-		for (const category of categories) {
-			const categoryPath = path.resolve(`${commandDir}/${category}/`);
-			const commandFiles = readdirSync(categoryPath);
+          // Assign as a command or an event, depending what the type is
+          if (type === 'command') {
+            this.client.commands.set(fileClass.help.name, fileClass);
+          } else {
+            this.client.on(fileClass.name, (...args: any) => fileClass.execute(this.client, ...args));
+          }
+        }
+      }
+    };
 
-			for (const file of commandFiles) {
-				try {
-					const commandImporter = await import(`${commandDir}/${category}/${file}`);
-					const command = new commandImporter.default(this.client);
-					
-					this.client.commands.set(command.help.name, command);
-					command.help.category = category;
-				} catch (e) {
-					console.error(`Could not load ${file} command` + e);
-				}
-			}
-		}
-		
-		/*
-			Load events
-		*/
+    registerFiles('../commands', 'command');
+    registerFiles('../events', 'event');
 
-		const eventDir = `${__dirname}/../events`;
-		const eventFiles = readdirSync(eventDir);
-
-		for (const file of eventFiles) {
-			try {
-				const eventImporter = await import(`${eventDir}/${file}`);
-				const event = new eventImporter.default(this.client);
-				
-				this.client.on(event.name, (...args: any) => event.execute(this.client, ...args));
-			} catch (e) {
-				console.error(`Could not load event!\n` + e);
-			}
-		}
-
-		/*
+    /*
 			Bot login
 		*/
 
-		try {
-			await this.client.login(token);
-			console.log(`Client login as ${this.client.user!.tag}`);
-		}
-		catch (e) {
-			console.error(e);
-		}
-	}
+    try {
+      await this.client.login(process.env.DISCORD_API_TOKEN);
+      this.client.logger.log(`Client login as ${this.client.user!.tag}`);
+    } catch (e) {
+      this.client.logger.error(e);
+    }
+  }
 }
