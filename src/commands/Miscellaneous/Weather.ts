@@ -1,5 +1,5 @@
 import { Client, Message, MessageEmbed } from "discord.js";
-import Command from '../../base/Command';
+import Command from '../../base/classes/Command';
 import axios from 'axios';
 
 export default class Weather extends Command {

@@ -1,7 +1,7 @@
 import { Client, Collection } from "discord.js";
 import { readdirSync, lstatSync } from "fs";
 import path from "path";
-import Logger from "../base/Logger";
+import Logger from "../base/classes/Logger";
 
 import '../base/structures/Guild';
 

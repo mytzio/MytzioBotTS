@@ -1,4 +1,4 @@
-import Event from '../base/Event';
+import Event from '../base/classes/Event';
 import { Client } from 'discord.js';
 
 import defaultRole from '../base/functions/defaultRole';

@@ -1,5 +1,5 @@
 import { Structures, Client, Guild } from 'discord.js';
-import MediaPlayer from '../MediaPlayer';
+import MediaPlayer from '../classes/MediaPlayer';
 
 Structures.extend('Guild', Guild => {
   class GuildExtension extends Guild {

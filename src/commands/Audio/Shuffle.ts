@@ -1,4 +1,4 @@
-import Command from '../../base/Command';
+import Command from '../../base/classes/Command';
 import { Client, Message } from "discord.js";
 import GuildExtension from '../../base/structures/Guild';
 

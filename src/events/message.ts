@@ -1,4 +1,4 @@
-import Event from '../base/Event';
+import Event from '../base/classes/Event';
 import { Client, Message } from 'discord.js';
 
 import config from '../config.json';

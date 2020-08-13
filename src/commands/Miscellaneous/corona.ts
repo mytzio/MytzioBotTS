@@ -1,5 +1,5 @@
 import { Client, Message, MessageEmbed } from "discord.js";
-import Command from '../../base/Command';
+import Command from '../../base/classes/Command';
 import _ from 'lodash';
 import dayjs from "dayjs";
 import utc from 'dayjs/plugin/utc';
