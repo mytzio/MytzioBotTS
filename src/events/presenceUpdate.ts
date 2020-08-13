@@ -12,7 +12,7 @@ export default class PresenceEvent extends Event {
   public async execute(_client: Client, _oldPresence: Presence, newPresence: Presence) {
     const guildConfig = config.guilds.find(g => g.id === newPresence.guild?.id);
     if (guildConfig) {
-      guildConfig.activity.forEach(activity => {
+      guildConfig.activities.forEach(activity => {
         const isActivity = newPresence.activities.find(a => a.type === activity.type);
         const isRole = newPresence.guild?.roles.cache.find(r => r.id === activity.role);
         const hasRole = newPresence.member?.roles.cache.find(r => r.id === activity.role);

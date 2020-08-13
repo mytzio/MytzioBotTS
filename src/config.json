@@ -1,0 +1,32 @@
+{
+  "default": {
+    "prefix": "!"
+  },
+  "guilds": [
+    {
+      "id": "271021464952504330",
+      "prefix": ".",
+      "default": {
+        "role": {
+          "id": "739044048152690759",
+          "exclude": {
+            "bot": true
+          }
+        }
+      },
+      "activities": [
+        {
+          "type": "STREAMING",
+          "role": "667357574747652098"
+        }
+      ],
+      "log": {
+        "traffic": "618521046231810078",
+        "moderation": "618521046231810078"
+      },
+      "mediaPlayer": {
+        "volume": 50
+      }
+    }
+  ]
+}

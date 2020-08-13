@@ -6,12 +6,12 @@ export default class Test extends Command {
     super(client, {
       name: 'test',
       description: 'Testing command',
-      permLevel: 'Mod'
+      permissions: ['KICK_MEMBERS']
     });
   }
 
   public async execute(_client: Client, _message: Message, _args: string[]) {
 
-    console.log(await _message.guild?.fetchPreview());
+    console.log('test command');
   }
 }

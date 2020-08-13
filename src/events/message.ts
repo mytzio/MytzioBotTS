@@ -32,20 +32,9 @@ export default class MessageEvent extends Event {
       if (!command.config.enabled) return;
 
       // permissions
-      if (command.config.permLevel !== 'User') {
-        const permsDenied = 'You are not allowed to use that command';
-        if (command.config.permLevel === 'Mod' && !message.member?.hasPermission(4)) {
-          message.channel.send(permsDenied);
-          return;
-        }
-        else if (command.config.permLevel === 'Admin' && !message.member?.hasPermission(8)) {
-          message.channel.send(permsDenied);
-          return;
-        }
-        else if (command.config.permLevel === 'Owner' && message.member?.id !== '271016450750283776') {
-          message.channel.send(permsDenied);
-          return;
-        }
+      if (!command.config.permissions.every((permission: any) => message.member?.permissions.toArray().includes(permission))) {
+        message.channel.send('You don\'t have permissions to run this command');
+        return;
       }
 
       // is command guildOnly?

@@ -70,15 +70,15 @@ export default class Weather extends Command {
         { name: '\u200B', value: '\u200B' },
 
         {
-          name: 'Today', value: `${Math.round(dailyForecasts[0].temp.day)} / ${Math.round(dailyForecasts[0].temp.night)}°C\n
+          name: 'Today', value: `${Math.round(dailyForecasts[0].temp.max)} / ${Math.round(dailyForecasts[0].temp.min)}°C\n
           ${dailyForecasts[0].weather[0].main} (${dailyForecasts[0].weather[0].description})`, inline: true
         },
         {
-          name: 'Tomorrow', value: `${Math.round(dailyForecasts[1].temp.day)} / ${Math.round(dailyForecasts[1].temp.night)}°C\n
+          name: 'Tomorrow', value: `${Math.round(dailyForecasts[1].temp.max)} / ${Math.round(dailyForecasts[1].temp.min)}°C\n
           ${dailyForecasts[1].weather[0].main} (${dailyForecasts[1].weather[0].description})`, inline: true
         },
         {
-          name: 'The Next Day', value: `${Math.round(dailyForecasts[2].temp.day)} / ${Math.round(dailyForecasts[2].temp.night)}°C\n
+          name: 'The Next Day', value: `${Math.round(dailyForecasts[2].temp.max)} / ${Math.round(dailyForecasts[2].temp.min)}°C\n
           ${dailyForecasts[2].weather[0].main} (${dailyForecasts[2].weather[0].description})`, inline: true
         },
       );

@@ -3,6 +3,8 @@ import { readdirSync, lstatSync } from "fs";
 import path from "path";
 import Logger from "../base/Logger";
 
+import '../base/structures/Guild';
+
 export default class Bot {
   public client: Client;
 

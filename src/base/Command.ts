@@ -1,23 +1,23 @@
-import { Client } from 'discord.js'
+import { Client, PermissionString } from 'discord.js';
 
 export default class Command {
 
   public client: Client;
-  public config: { enabled: boolean; guildOnly: boolean; aliases: any[]; permLevel: string; };
+  public config: { enabled: boolean; guildOnly: boolean; aliases: string[]; permissions: PermissionString[]; };
   public help: { name: string; description: string; usage: string[]; category: string; };
 
-  constructor(client: Client, {
+  constructor (client: Client, {
     name = 'No name provided',
-    description = 'No description provided',
-    usage = ['No usage provided'],
+    description = 'No description',
+    usage = new Array(),
     category = 'Miscelaneous',
     enabled = true,
     guildOnly = false,
     aliases = new Array(),
-    permLevel = 'User'
+    permissions = new Array()
   }) {
     this.client = client;
-    this.config = { enabled, guildOnly, aliases, permLevel };
+    this.config = { enabled, guildOnly, aliases, permissions };
     this.help = { name, description, usage, category };
   }
 }

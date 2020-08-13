@@ -7,9 +7,9 @@ export default class Region extends Command {
       name: 'region',
       description: 'Change server region',
       aliases: ['reg'],
-      usage: ['regionName'],
+      usage: ['name of region'],
       guildOnly: true,
-      permLevel: 'Mod'
+      permissions: ['KICK_MEMBERS']
     });
   }
 
@@ -22,7 +22,7 @@ export default class Region extends Command {
       const updated = await _message.guild.setRegion(_args[0]);
       return _message.channel.send(`Updated guild region to ${updated.region}`);
     }
-    catch (e) {
+    catch {
       const list = (await _message.guild.fetchVoiceRegions()).keyArray().sort().join('\n');
       return _message.channel.send(`\`\`\`Available regions:\n\n${list}\`\`\``);
     }

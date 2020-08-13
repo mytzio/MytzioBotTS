@@ -1,6 +1,8 @@
 import Event from '../base/Event';
 import { Client } from 'discord.js';
+
 import defaultRole from '../base/functions/defaultRole';
+import presenceUpdater from '../base/functions/presenceUpdater';
 
 import axios from "axios";
 axios.defaults;
@@ -28,5 +30,8 @@ export default class ReadyEvent extends Event {
         defaultRole(member);
       });
     });
+
+    // Set presence
+    presenceUpdater(_client);
   }
 }
