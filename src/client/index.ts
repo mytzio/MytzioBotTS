@@ -6,7 +6,7 @@ import Logger from "../base/classes/Logger";
 import '../base/structures/Guild';
 
 export default class Bot {
-  public client: Client;
+  public client: any;
 
   constructor () {
     this.client = new Client({ disableMentions: "everyone" });
@@ -47,8 +47,8 @@ export default class Bot {
     registerFiles('../events', 'event');
 
     /*
-			Bot login
-		*/
+      Bot login
+    */
 
     try {
       await this.client.login(process.env.DISCORD_API_TOKEN);
