@@ -9,7 +9,7 @@ export default class MessageEvent extends Event {
     super(client, 'message');
   }
 
-  public async execute(_client: Client, message: Message) {
+  public async execute(_client: any, message: Message) {
 
     // Ignore other bots and their messages
     if (message.author.bot) return;
@@ -46,7 +46,7 @@ export default class MessageEvent extends Event {
       try {
         command.execute(_client, message, args);
       } catch (e) {
-        this.client.logger.error(e);
+        _client.logger.error(e);
         message.channel.send('There was an error trying to execute that command').catch(console.error);
       }
     }

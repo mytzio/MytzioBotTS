@@ -10,7 +10,7 @@ export default class Help extends Command {
     });
   }
 
-  public async execute(_client: Client, _message: Message, _args: string[]) {
+  public async execute(_client: any, _message: Message, _args: string[]) {
     if (_args[0] && _client.commands.has(_args[0])) {
       const command = _client.commands.get(_args[0]);
 
