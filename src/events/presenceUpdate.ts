@@ -5,8 +5,8 @@ import config from '../config.json';
 
 export default class PresenceEvent extends Event {
 
-  constructor (client: Client) {
-    super(client, 'presenceUpdate');
+  constructor () {
+    super('presenceUpdate');
   }
 
   public async execute(_client: Client, _oldPresence: Presence, newPresence: Presence) {

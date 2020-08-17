@@ -3,8 +3,8 @@ import { Client, Message } from "discord.js";
 import GuildExtension from '../../base/structures/Guild';
 
 export default class Resume extends Command {
-  constructor (client: Client) {
-    super(client, {
+  constructor () {
+    super({
       name: 'resume',
       description: 'resumes audio track',
     });

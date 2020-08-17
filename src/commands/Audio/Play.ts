@@ -3,8 +3,8 @@ import { Client, Message } from "discord.js";
 import GuildExtension from '../../base/structures/Guild';
 
 export default class Play extends Command {
-  constructor (client: Client) {
-    super(client, {
+  constructor () {
+    super({
       name: 'play',
       aliases: ['sr'],
       description: 'Plays audio stream',

@@ -6,8 +6,8 @@ import config from '../config.json';
 
 export default class MemberJoinEvent extends Event {
 
-  constructor (client: Client) {
-    super(client, 'guildMemberAdd');
+  constructor () {
+    super('guildMemberAdd');
   }
 
   public async execute(_client: Client, member: GuildMember) {

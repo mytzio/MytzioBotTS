@@ -1,12 +1,12 @@
 import Event from '../base/classes/Event';
-import { Client, Message } from 'discord.js';
+import { Message } from 'discord.js';
 
 import config from '../config.json';
 
 export default class MessageEvent extends Event {
 
-  constructor (client: Client) {
-    super(client, 'message');
+  constructor () {
+    super('message');
   }
 
   public async execute(_client: any, message: Message) {

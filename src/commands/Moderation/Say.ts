@@ -2,8 +2,8 @@ import { Client, Message } from "discord.js";
 import Command from '../../base/classes/Command';
 
 export default class Say extends Command {
-  constructor (client: Client) {
-    super(client, {
+  constructor () {
+    super({
       name: 'say',
       description: 'Say something as a bot',
       permissions: ['ADMINISTRATOR']

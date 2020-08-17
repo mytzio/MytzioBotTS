@@ -9,19 +9,19 @@ axios.defaults;
 
 export default class ReadyEvent extends Event {
 
-  constructor (client: Client) {
-    super(client, 'ready');
+  constructor () {
+    super('ready');
   }
 
   public async execute(_client: Client) {
     // Generate an Invitation Link
     try {
       const link = await _client.generateInvite(8);
-      this.client.logger.log('Invite bot to your server by using link below:');
-      this.client.logger.log(link);
+      console.log('Invite bot to your server by using link below:');
+      console.log(link);
     }
     catch (e) {
-      this.client.logger.error(e);
+      console.error(e);
     }
 
     // Default role assigning

@@ -2,8 +2,8 @@ import { Client, Message, MessageEmbed } from "discord.js";
 import Command from '../../base/classes/Command';
 
 export default class ServerInfo extends Command {
-  constructor (client: Client) {
-    super(client, {
+  constructor () {
+    super({
       name: 'serverinfo',
       description: 'Shows info about the server',
       aliases: ['sinfo'],

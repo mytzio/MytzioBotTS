@@ -11,8 +11,8 @@ import axios from "axios";
 axios.defaults;
 
 export default class Corona extends Command {
-  constructor (client: Client) {
-    super(client, {
+  constructor () {
+    super({
       name: 'corona',
       description: 'Show statistics about COVID-19 in Finland',
       aliases: ['c', 'korona'],

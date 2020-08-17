@@ -5,8 +5,8 @@ import config from '../config.json';
 
 export default class MemberLeftEvent extends Event {
 
-  constructor (client: Client) {
-    super(client, 'guildMemberRemove');
+  constructor () {
+    super('guildMemberRemove');
   }
 
   public async execute(_client: Client, member: GuildMember) {

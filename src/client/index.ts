@@ -1,7 +1,6 @@
 import { Client, Collection } from "discord.js";
 import { readdirSync, lstatSync } from "fs";
 import path from "path";
-import Logger from "../base/classes/Logger";
 
 import '../base/structures/Guild';
 
@@ -11,7 +10,6 @@ export default class Bot {
   constructor () {
     this.client = new Client({ disableMentions: "everyone" });
     this.client.commands = new Collection();
-    this.client.logger = new Logger();
   }
 
   public async init() {
@@ -52,9 +50,9 @@ export default class Bot {
 
     try {
       await this.client.login(process.env.DISCORD_API_TOKEN);
-      this.client.logger.log(`Client login as ${this.client.user!.tag}`);
+      console.log(`Client login as ${this.client.user!.tag}`);
     } catch (e) {
-      this.client.logger.error(e);
+      console.error(e);
     }
   }
 }

@@ -3,8 +3,8 @@ import Command from '../../base/classes/Command';
 import axios from 'axios';
 
 export default class Weather extends Command {
-  constructor (client: Client) {
-    super(client, {
+  constructor () {
+    super({
       name: 'weather',
       description: 'Get weather by location',
       aliases: ['w'],
