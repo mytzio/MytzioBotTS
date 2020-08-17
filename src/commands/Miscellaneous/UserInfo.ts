@@ -14,30 +14,26 @@ export default class UserInfo extends Command {
     let member = _message.mentions.members?.first() || _message.guild?.members.cache.find(user => user.displayName.toLowerCase() === _args[0]);
 
     if (!_args.length) member = _message.member || undefined;
-    if (!member) return _message.channel.send('Could not find that user!');
+    if (!member) return _message.channel.send('Could not find that user!').catch(console.error);
 
     const embed = new MessageEmbed()
-      .setAuthor(member?.user.tag, member?.user.avatarURL() || undefined)
-      .setThumbnail(member?.user.avatarURL() || '-')
-      .setColor(member.displayHexColor)
+      .setThumbnail(member.user.avatarURL() ?? member.user.defaultAvatarURL)
+      .setColor('BLUE')
 
       .addFields(
-        { name: 'Username', value: member?.user.username || '-', inline: true },
-        { name: 'Discriminator', value: member?.user.discriminator || '-', inline: true },
-        { name: 'Bot account', value: member?.user.bot ? 'Yes' : 'No', inline: true },
-        { name: 'User ID', value: member?.user.id || '-' },
+        { name: 'Username', value: member.user.tag, inline: true },
+        { name: 'User ID', value: member.user.id, inline: true },
+        { name: 'Flags', value: member.user.flags.toArray().length ? member.user.flags.toArray() : 'None' },
+        { name: 'Created At', value: member.user.createdAt },
 
-        { name: 'Created at', value: member?.user.createdAt },
         { name: '\u200B', value: '\u200B' },
 
-        { name: 'Nickname', value: member?.displayName || '-', inline: true },
-        { name: 'Boosting', value: member?.premiumSince ? 'Yes' : 'No', inline: true },
-        { name: 'Last message', value: member?.lastMessage || '-', inline: true },
-        { name: 'Roles', value: member?.roles.cache.filter(r => r.name !== '@everyone').map(r => r).join(', ') || '-' },
-
-        { name: 'Joined at', value: member?.joinedAt },
+        { name: 'Nickname', value: member.displayName, inline: true },
+        { name: 'Last Message', value: member.lastMessage, inline: true },
+        { name: 'Roles', value: member.roles.cache.filter(r => r.name !== '@everyone').map(r => r).join(' ') },
+        { name: 'Joined At', value: member.joinedAt },
       );
 
-    return _message.channel.send(embed);
+    return _message.channel.send(embed).catch(console.error);
   }
 }
