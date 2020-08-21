@@ -23,7 +23,7 @@ export default class UserInfo extends Command {
       .addFields(
         { name: 'Username', value: member.user.tag, inline: true },
         { name: 'User ID', value: member.user.id, inline: true },
-        { name: 'Flags', value: member.user.flags.toArray().length ? member.user.flags.toArray() : 'None' },
+        { name: 'Flags', value: member.user.flags ? member.user.flags.toArray() : 'None' },
         { name: 'Created At', value: member.user.createdAt },
 
         { name: '\u200B', value: '\u200B' },
